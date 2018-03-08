@@ -96,6 +96,16 @@ export default class Slider extends PureComponent {
     maximumTrackTintColor: PropTypes.string,
 
     /**
+     * The height for the track to the left of the button. Default value is TRACK_SIZE.
+     */
+    minimumTrackHeight: PropTypes.number,
+
+    /**
+     * The height for the track to the right of the button. Default value is TRACK_SIZE.
+     */
+    maximumTrackHeight: PropTypes.number,
+
+    /**
      * The color used for the thumb.
      */
     thumbTintColor: PropTypes.string,
@@ -176,6 +186,8 @@ export default class Slider extends PureComponent {
     step: 0,
     minimumTrackTintColor: '#3f3f3f',
     maximumTrackTintColor: '#b3b3b3',
+    minimumTrackHeight: TRACK_SIZE,
+    maximumTrackHeight: TRACK_SIZE,
     thumbTintColor: '#343434',
     thumbTouchSize: {width: 40, height: 40},
     debugTouchArea: false,
@@ -221,6 +233,8 @@ export default class Slider extends PureComponent {
       maximumValue,
       minimumTrackTintColor,
       maximumTrackTintColor,
+      minimumTrackHeight,
+      maximumTrackHeight,
       thumbTintColor,
       thumbImage,
       styles,
@@ -246,15 +260,21 @@ export default class Slider extends PureComponent {
       position: 'absolute',
       width: Animated.add(thumbLeft, thumbSize.width / 2),
       backgroundColor: minimumTrackTintColor,
+      height: minimumTrackHeight,
       ...valueVisibleStyle
     };
+
+    var maximumTrackStyle = {
+      backgroundColor: maximumTrackTintColor,
+      height: maximumTrackHeight
+    }
 
     var touchOverflowStyle = this._getTouchOverflowStyle();
 
     return (
       <View {...other} style={[mainStyles.container, style]} onLayout={this._measureContainer}>
         <View
-          style={[{backgroundColor: maximumTrackTintColor,}, mainStyles.track, trackStyle]}
+          style={[mainStyles.track, trackStyle, maximumTrackStyle]}
           renderToHardwareTextureAndroid={true}
           onLayout={this._measureTrack} />
         <Animated.View
